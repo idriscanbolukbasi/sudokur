@@ -2,22 +2,17 @@ import java.util.*;
 
 public class SudokuCreater {
     private int[][] board = new int[9][9];
-    private Random rand = new Random();
     private List<Integer> numbers = Arrays.asList(new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9});
 
     SudokuCreater() {
-        create();
-    }
-
-    private void create() {
-        fillBox(0, 0);
+        fill(0,0);
     }
 
     public int[][] getBoard() {
         return board;
     }
 
-    private void fillBox(int row, int col) {
+    private void fill(int row, int col) {
         int tempRow = row;
         int tempCol = col;
         Collections.shuffle(numbers);
@@ -35,7 +30,7 @@ public class SudokuCreater {
                 } else {
                     tempRow++;
                 }
-                fillBox(tempRow, tempCol);
+                fill(tempRow, tempCol);
             }
         }
 
