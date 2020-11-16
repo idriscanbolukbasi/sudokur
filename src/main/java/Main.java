@@ -67,6 +67,7 @@ public class Main {
                             System.out.println("Given second argument is not suitable for difficulty command. Please check and re-type your command, i.e., \"D E\" \"D M\" \"D H\"");
                     }
                 }
+                System.out.println("Given command is not suitable, please check and re-type your command.");
             }
         }
     }
