@@ -1,9 +1,12 @@
+import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Scanner;
 
 public class Main {
     static final char DEFAULT = '\u0000'; // default value for characters that used in printing the grid
     static Difficulty difficulty = Difficulty.MEDIUM; // default difficulty
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UnsupportedEncodingException {
+        System.setOut(new PrintStream(System.out, true, "UTF-8")); // to avoid platform (OS) dependent outputs like ??????
         System.out.println("Welcome to Sudokur" +
                 "\nCommands are:" +
                 "\n \"G\": Generates a 3x3 puzzle randomly, and prints out it on screen." +
