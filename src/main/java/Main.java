@@ -1,14 +1,15 @@
 import java.util.Scanner;
 
 public class Main {
+    static final char DEFAULT = '\u0000'; // default value for characters that used in printing the grid
+    static Difficulty difficulty = Difficulty.MEDIUM; // default difficulty
     public static void main(String[] args) {
-        Difficulty difficulty = Difficulty.MEDIUM;
         System.out.println("Welcome to Sudokur" +
                 "\nCommands are:" +
                 "\n \"G\": Generates a 3x3 puzzle randomly, and prints out it on screen." +
                 "\n \"S\": Solves the generated puzzle with a recursive brute force approach" +
-                "\n \"D <E/M/H>\": Sets the difficulty of the puzzle will be generated default is \"D M\" which is medium difficulty." +
-                "\nPlease type a command:");
+                "\n \"D <E/M/H>\": Sets the difficulty of the puzzle will be generated, default is \"D M\" which is medium difficulty." +
+                "\nYou can only use one command per line, please type a command:");
         Scanner scanner = new Scanner(System.in);
         SudokuGenerator creator = null;
         SudokuSolver solver = null;
@@ -24,7 +25,6 @@ public class Main {
                         }
                         creator = new SudokuGenerator(difficulty);
                         System.out.println("Board has been initialized. Please solve the current board with command \"S\"");
-                        printBoard(creator.getBoard());
                         solver = null;
                         break;
                     case "S":
@@ -36,12 +36,12 @@ public class Main {
                             System.out.println("The generated puzzle has been already solved. Please generate a new one first to solve it.");
                             continue;
                         }
-                        solver = new SudokuSolver(creator.getBoard());
-                        printBoard(solver.getBoard());
+                        solver = new SudokuSolver(creator.getGrid());
                         creator = null;
                         break;
                     default:
-                        System.out.println("Given command is not suitable you can only use 2 commands with one character: \"G\" and \"S\"");
+                        System.out.println("Given command is not suitable you can only use 2 commands with one character: \"G\" and \"S\"" +
+                                           "\nOr you can set the difficulty to medium as an example: \"D M\"");
                         break;
                 }
             } else {
@@ -61,24 +61,24 @@ public class Main {
                             System.out.println("The difficulty is now set as \"HARD\". Generate a new puzzle to solve it.");
                             break;
                         default:
-                            System.out.println("Given command is not suitable for difficulty command. Please check and re-type your command, i.e., \"D E\"");
+                            System.out.println("Given second argument is not suitable for difficulty command. Please check and re-type your command, i.e., \"D E\" \"D M\" \"D H\"");
                     }
                 }
             }
         }
     }
 
-    public static void printBoard(String[][] board) {
-        for (int i = 0; i < board.length; i++) {
+    public static void printGrid(char[][] grid) { // we just try to print sudoku grid as good as it could be
+        for (int i = 0; i < grid.length; i++) {
             if (i % 3 == 0) {
                 if (i == 0) System.out.println("╔═══╤═══╤═══╦═══╤═══╤═══╦═══╤═══╤═══╗");
                 else System.out.println("\n╠═══╪═══╪═══╬═══╪═══╪═══╬═══╪═══╪═══╣");
             } else System.out.println("\n╟───┼───┼───╫───┼───┼───╫───┼───┼───╢");
-            for (int j = 0; j < board[i].length; j++) {
-                String value = board[i][j] == null ? " " : board[i][j];
-                if (j == board[i].length - 1) System.out.print("| " + value + " ║");
-                else if (j % 3 == 0) System.out.print("║ " + value + " ");
-                else System.out.print("│ " + value + " ");
+            for (int j = 0; j < grid[i].length; j++) {
+                char value = grid[i][j];
+                if (j == grid[i].length - 1) System.out.print(value == DEFAULT ? "| " + " " + " ║" : "| " + value + " ║");
+                else if (j % 3 == 0) System.out.print(value == DEFAULT ? "║ " + " " + " " : "║ " + value + " ");
+                else System.out.print(value == DEFAULT ? "│ " + " " + " " : "│ " + value + " ");
             }
         }
         System.out.println("\n╚═══╧═══╧═══╩═══╧═══╧═══╩═══╧═══╧═══╝");
