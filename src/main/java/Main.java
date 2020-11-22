@@ -5,13 +5,14 @@ import java.util.Scanner;
 public class Main {
     static final char DEFAULT = '\u0000'; // default value for characters that used in printing the grid
     static Difficulty difficulty = Difficulty.MEDIUM; // default difficulty
+
     public static void main(String[] args) throws UnsupportedEncodingException {
         System.setOut(new PrintStream(System.out, true, "UTF-8")); // to avoid platform (OS) dependent outputs like ??????
         System.out.println("Welcome to Sudokur" +
                 "\nCommands are:" +
                 "\n \"G\": Generates a 3x3 puzzle randomly, and prints out it on screen." +
                 "\n \"S\": Solves the generated puzzle with a recursive brute force approach" +
-                "\n \"D <E/M/H>\": Sets the difficulty of the puzzle will be generated, default is \"D M\" which is medium difficulty." +
+                "\n \"D <E/M/H>\": Sets the difficulty of the puzzle will be generated, default is \"D E\" which is easy difficulty." +
                 "\nYou can only use one command per line, please type a command:");
         Scanner scanner = new Scanner(System.in);
         SudokuGenerator creator = null;
@@ -44,7 +45,7 @@ public class Main {
                         break;
                     default:
                         System.out.println("Given command is not suitable you can only use 2 commands with one character: \"G\" and \"S\"" +
-                                           "\nOr you can set the difficulty to medium as an example: \"D M\"");
+                                "\nOr you can set the difficulty to medium as an example: \"D M\"");
                         break;
                 }
             } else {
@@ -80,7 +81,8 @@ public class Main {
             } else System.out.println("\n╟───┼───┼───╫───┼───┼───╫───┼───┼───╢");
             for (int j = 0; j < grid[i].length; j++) {
                 char value = grid[i][j];
-                if (j == grid[i].length - 1) System.out.print(value == DEFAULT ? "| " + " " + " ║" : "| " + value + " ║");
+                if (j == grid[i].length - 1)
+                    System.out.print(value == DEFAULT ? "| " + " " + " ║" : "| " + value + " ║");
                 else if (j % 3 == 0) System.out.print(value == DEFAULT ? "║ " + " " + " " : "║ " + value + " ");
                 else System.out.print(value == DEFAULT ? "│ " + " " + " " : "│ " + value + " ");
             }

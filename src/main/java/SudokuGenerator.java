@@ -1,4 +1,4 @@
-import java.util.*;
+import java.util.Random;
 
 public class SudokuGenerator { // T = O(N^2) | instead of SudokuCreater (misspelled by the way) SudokuGenerator seems much more fine
     private final char DEFAULT = '\u0000'; // default value for blank character
@@ -8,15 +8,14 @@ public class SudokuGenerator { // T = O(N^2) | instead of SudokuCreater (misspel
             {'2', 'I', 'B', 'C', 'M', '1', '3', 'G', 'N'}, {'G', '3', 'N', '2', 'I', 'B', 'M', 'C', '1'}, {'C', 'M', '1', 'G', '3', 'N', 'I', '2', 'B'}};
     // towards, we do not have to create an unique grid over an over again instead of we just create a new one by shuffling actually using the template
     // we can create as much grids as we can create from nothing with this shuffling stuff, so we don't have to create a grid from nothing
-    private char[][] tempTable = new char[9][9]; // we got a temporary table to store row data of the template in order to shuffle rows
-    private Random random = new Random(); // of course we will need random values to shuffle every row and column separately
+    private final char[][] tempTable = new char[9][9]; // we got a temporary table to store row data of the template in order to shuffle rows
+    private final Random random = new Random(); // of course we will need random values to shuffle every row and column separately
 
     SudokuGenerator(Difficulty difficulty) { // we'll need difficulty in the argument of default constructor to hide cells accordingly
         for (int i = 0; i < 500 + random.nextInt(500); i++) shuffleRows(); // we'll shuffle rows 500-999 times
         for (int j = 0; j < 500 + random.nextInt(500); j++) shuffleColumns(); // we'll shuffle columns 500-999 times
         for (int k = 0; k < 500 + random.nextInt(500); k++) shuffleValues(); // we'll shuffle values 500-999 times
-        int randomizeFactor = random.nextInt(difficulty.getMaximum() - difficulty.getMinimum()); // in case of getting a value between maximum and minimum
-        hideCells(difficulty.getMinimum() + randomizeFactor); // we can just use this method
+        hideCells(difficulty); // we have to hide cells according to difficulty level given in default constructor
         Main.printGrid(grid); // and finally we're ready to print the grid
     }
 
@@ -57,15 +56,18 @@ public class SudokuGenerator { // T = O(N^2) | instead of SudokuCreater (misspel
         return grid;
     }
 
-    private void hideCells(int threshold) { // we must hide cells to make a puzzle according to difficulty given in the default constructor
-        int cellNumberToHide = 81 - threshold;
+    private void hideCells(Difficulty difficulty) { // T = O(N) | We must hide cells to make a puzzle according to difficulty given in the default constructor
+        int randomizeFactor = random.nextInt(difficulty.getMaximum() - difficulty.getMinimum()); // in case of getting a value between maximum and minimum
+        int N = grid.length - 1; // since we'll dealing with taking symmetry of a coordinate we'll need this
+        int cellNumberToHide = ((81 - difficulty.getMinimum() + randomizeFactor) / 2) * 2; // we should get odd values to make puzzle itself symmetrical
         int hidedCells = 0;
         while (hidedCells < cellNumberToHide) {
-            int row = random.nextInt(9);
+            int row = random.nextInt(9); // we'll pick random row and column values
             int column = random.nextInt(9);
-            if (grid[row][column] != DEFAULT) {
-                grid[row][column] = DEFAULT;
-                hidedCells++;
+            if (grid[row][column] != DEFAULT) { // and check if the chosen cell is already empty or not
+                grid[row][column] = DEFAULT; // assume row and column are both equal to 0
+                grid[N - row][N - column] = DEFAULT; // if we set [0][0] as blank (default) we have to set [8][8] which is symmetric to [0][0] with respect to center box (square/grid)
+                hidedCells = hidedCells + 2; // we have to increase hidedCells by 2 since we'll using symmetric hiding methodology to avoid non-unique puzzles
             }
         }
     }
