@@ -50,6 +50,10 @@ public class Main {
                 }
             } else {
                 String[] arguments = input.split(" ");
+                if (arguments.length == 0) {
+                    System.out.println("Given command is not suitable, please check and re-type your command.");
+                    continue;
+                }
                 if (arguments[0].equals("D")) {
                     switch (arguments[1]) {
                         case "E":
