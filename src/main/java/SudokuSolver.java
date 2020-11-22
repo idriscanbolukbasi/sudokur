@@ -13,7 +13,7 @@ public class SudokuSolver { // T = O(N^3) | Class that contains methods to solve
             Main.printGrid(this.grid); // if solve process is true, than we have to print the fully-solved grid
     }
 
-    private boolean solve(char[][] grid, int row, int col) { // T = O(N^3) | recursive function that solves the grid according to given row and column value as arguments
+    private boolean solve(char[][] grid, int row, int col) { // T = O(2^N) | recursive function that solves the grid according to given row and column value as arguments
         if (row == grid.length - 1 && col == grid.length) { // this seems like an error but it's not, since we'll increasing every column value to get next element,
             this.grid = grid; // when the solve method is done the row will become 8 (for 9x9 grid) and column will become 9 due to that situation
             return true; // and if they are become as 8 and 9 that indicates the progress is done and sudoku is solved
