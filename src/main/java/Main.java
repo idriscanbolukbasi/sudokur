@@ -19,8 +19,9 @@ public class Main {
         SudokuSolver solver = null;
 
         while (true) {
-            String input = scanner.nextLine();
-            if (input.length() == 1) {
+            String input = scanner.nextLine().trim().toUpperCase();
+            String[] arguments = input.split(" ");
+            if (arguments.length == 1) {
                 switch (input) {
                     case "G":
                         if (creator != null) {
@@ -48,12 +49,7 @@ public class Main {
                                 "\nOr you can set the difficulty to medium as an example: \"D M\"");
                         break;
                 }
-            } else {
-                String[] arguments = input.split(" ");
-                if (arguments.length == 0) {
-                    System.out.println("Given command is not suitable, please check and re-type your command.");
-                    continue;
-                }
+            } else if (arguments.length == 2) {
                 if (arguments[0].equals("D")) {
                     switch (arguments[1]) {
                         case "E":
@@ -72,8 +68,8 @@ public class Main {
                             System.out.println("Given second argument is not suitable for difficulty command. Please check and re-type your command, i.e., \"D E\" \"D M\" \"D H\"");
                     }
                 }
-                System.out.println("Given command is not suitable, please check and re-type your command.");
-            }
+                else System.out.println("Given command is not suitable, please check and re-type your command.");
+            } else System.out.println("Given command is not suitable, please check and re-type your command.");
         }
     }
 
